@@ -9,5 +9,5 @@ scalaVersion := "2.11.7"
 scalaJSUseRhino in Global := false
 skip in packageJSDependencies := false
 
-libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.8.2"
+libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.1"
 libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.4.6"
