@@ -2,7 +2,7 @@ package com.nadeau.grouper.models
 
 import scala.util.Random
 
-case class Group(name: String)
+case class Group(id: String)
 object Group {
   val None = Group("")
 

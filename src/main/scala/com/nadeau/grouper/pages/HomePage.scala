@@ -7,35 +7,38 @@ import scala.scalajs.js
 
 object HomePage {
 
-  case class State(groupName: String)
+  case class State(id: String)
 
   def buttonGroup(state: State) = {
     <.div(
       <.button(
         "Create",
-        ^.onClick := printGroup(state)
+        ^.onClick := createGroup(state)
       ),
       <.button(
         "Join",
-        ^.onClick := printGroup(state)
+        ^.onClick := joinGroup(state)
       )
     )
   }
-  def printGroup(state: State): js.Function = { e: ReactEvent =>
-    println(state.groupName)
+  def createGroup(state: State): js.Function = { e: ReactEvent =>
+  }
+  def joinGroup(state: State): js.Function = { e: ReactEvent =>
+    println(state.id)
   }
 
   class Backend($: BackendScope[Unit, State]) {
 
-    def groupNameChange(e: ReactEventI) =
-      $.modState(_.copy(groupName = e.target.value))
+    def groupNameChange(e: ReactEventI) = {
+      $.modState(_.copy(id = e.target.value))
+    }
 
     def render(state: State) =
       <.div(
         <.div("Groupify"),
         <.input(
           ^.onChange ==> groupNameChange,
-          ^.value := state.groupName
+          ^.value := state.id
         ),
         buttonGroup(state)
       )
