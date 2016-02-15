@@ -10,4 +10,5 @@ scalaJSUseRhino in Global := false
 skip in packageJSDependencies := false
 
 libraryDependencies += "be.doeraene" %%% "scalajs-jquery" % "0.8.1"
+libraryDependencies += "com.github.japgolly.scalajs-react" %%% "core" % "0.10.4"
 libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.4.6"

@@ -2,8 +2,11 @@ package com.nadeau.grouper.models
 
 import scala.util.Random
 
-case class Group(name: String)
+case class Group(name: String) {
+}
 object Group {
+  val None = Group("")
+
   var people = List[Person]()
 
   def join(person: Person) = people = person :: people
