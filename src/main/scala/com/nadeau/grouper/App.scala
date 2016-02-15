@@ -2,6 +2,7 @@ package com.nadeau.grouper
 
 
 import com.nadeau.grouper.components.{SearchablePersonList, HomePage}
+import japgolly.scalajs.react.ReactDOM
 import japgolly.scalajs.react.extra.router.{Redirect, RouterConfigDsl, BaseUrl, Router}
 import org.scalajs.dom
 
@@ -24,10 +25,11 @@ object App extends JSApp {
       .notFound(redirectToPage(Home)(Redirect.Replace))
   }
 
+  val baseUrl = BaseUrl(dom.window.location.href.takeWhile(_ != '#'))
+
   @JSExport
   override def main(): Unit = {
-    val baseUrl = BaseUrl.fromWindowOrigin + "/"
-    val router = Router(baseUrl, routerConfig)
-    router() render dom.document.body
+    val router = Router(baseUrl, routerConfig.logToConsole)()
+    val mounted = ReactDOM.render(router, dom.document.getElementsByClassName("grouper")(0))
   }
 }

@@ -6,48 +6,42 @@ import scala.scalajs.js
 
 object HomePage {
 
-  val component = ReactComponentB[Unit]("Home")
-    .render(_ =>
-      <.div(
-        grouperTitle,
-        joinCreateGroupControls
-      )
-    ).buildU
+  case class State(groupName: String)
 
-  def grouperTitle = {
+  def buttonGroup(state: State) = {
     <.div(
-      ^.`class` := "appTitle",
-      "Groupify"
-    )
-  }
-
-  def joinCreateGroupControls = {
-    <.div(
-      <.div(
-        <.input(
-          ^.`type` := "text",
-          ^.`class` := "groupName",
-          ^.placeholder := "Group name"
-        )
+      <.button(
+        "Create",
+        ^.onClick := printGroup(state)
       ),
-      <.div(
-        <.button(
-          "Create",
-          ^.onClick := createGroup
-        ),
-        <.button(
-          "Join",
-          ^.onClick := joinGroup
-        )
+      <.button(
+        "Join",
+        ^.onClick := printGroup(state)
       )
     )
   }
-
-  def createGroup: js.Function = { e: ReactEvent =>
-    println("GROUP CREATED")
+  def printGroup(state: State): js.Function = { e: ReactEvent =>
+    println(state.groupName)
   }
 
-  def joinGroup: js.Function = { e: ReactEvent =>
-    println("GROUP JOINED")
+  class Backend($: BackendScope[Unit, State]) {
+
+    def groupNameChange(e: ReactEventI) =
+      $.modState(_.copy(groupName = e.target.value))
+
+    def render(state: State) =
+      <.div(
+        <.div("Groupify"),
+        <.input(
+          ^.onChange ==> groupNameChange,
+          ^.value := state.groupName
+        ),
+        buttonGroup(state)
+      )
   }
+
+  val component = ReactComponentB[Unit]("Home")
+    .initialState(State(""))
+    .renderBackend[Backend]
+    .buildU
 }
