@@ -1,6 +1,7 @@
-package com.nadeau.grouper.components
+package com.nadeau.grouper.pages
 
-import japgolly.scalajs.react._, vdom.prefix_<^._
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
 
