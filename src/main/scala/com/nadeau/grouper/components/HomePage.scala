@@ -1,68 +1,53 @@
 package com.nadeau.grouper.components
 
-import com.nadeau.grouper.GroupMgmt
-import org.scalajs.dom
+import japgolly.scalajs.react._, vdom.prefix_<^._
 
-import scala.scalajs.js.annotation.JSExport
-import scalatags.JsDom.all._
-import org.scalajs.jquery.jQuery
+import scala.scalajs.js
 
 object HomePage {
 
-  val APP_TITLE = "Grouper"
-
-  def render = {
-    div(
-      grouperTitle,
-      joinCreateGroupControls
-    ).render
-  }
+  val component = ReactComponentB[Unit]("Home")
+    .render(_ =>
+      <.div(
+        grouperTitle,
+        joinCreateGroupControls
+      )
+    ).buildU
 
   def grouperTitle = {
-    div(
-      `class` := "appTitle",
-      APP_TITLE
+    <.div(
+      ^.`class` := "appTitle",
+      "Groupify"
     )
   }
 
-
   def joinCreateGroupControls = {
-    div(
-      div(
-        input(
-          `type` := "text",
-          `class` := "groupName",
-          placeholder := "Group name"
+    <.div(
+      <.div(
+        <.input(
+          ^.`type` := "text",
+          ^.`class` := "groupName",
+          ^.placeholder := "Group name"
         )
       ),
-      div(
-        createGroupButton,
-        joinGroupButton
+      <.div(
+        <.button(
+          "Create",
+          ^.onClick := createGroup
+        ),
+        <.button(
+          "Join",
+          ^.onClick := joinGroup
+        )
       )
     )
   }
 
-
-  val createGroupButton = input(
-    `type` := "button",
-    value := "Create"
-  ).render
-
-  createGroupButton.onclick = (e: dom.Event) => {
-    println("Create group " + getGroupName)
-    clearGroupName
+  def createGroup: js.Function = { e: ReactEvent =>
+    println("GROUP CREATED")
   }
 
-  val joinGroupButton = input(
-    `type` := "button",
-    value := "Join"
-  ).render
-
-  joinGroupButton.onclick = (e: dom.Event) => {
-    println("Join group " + getGroupName)
-    clearGroupName
+  def joinGroup: js.Function = { e: ReactEvent =>
+    println("GROUP JOINED")
   }
-
-  def getGroupName = jQuery(".groupName").`val`
-  def clearGroupName = jQuery(".groupName").`val`("")
 }
