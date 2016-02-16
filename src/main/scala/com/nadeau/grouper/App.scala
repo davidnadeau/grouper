@@ -11,7 +11,6 @@ import scala.scalajs.js.annotation.JSExport
 object App extends JSApp {
 
   sealed trait Pages
-
   case object Home extends Pages
   case class ViewGroupAsCreator(id: String) extends Pages
   case class ViewGroupAsGuest(id: String) extends Pages

@@ -1,25 +1,29 @@
 package com.nadeau.grouper.pages
 
-import com.nadeau.grouper.App.{ViewGroupAsGuest, ViewGroupAsCreator, Pages}
-import japgolly.scalajs.react._
+import com.nadeau.grouper.App._
+import com.nadeau.grouper.models._
+import japgolly.scalajs.react._, vdom.prefix_<^._
 import japgolly.scalajs.react.extra.router.RouterCtl
-import japgolly.scalajs.react.vdom.prefix_<^._
-
-import scala.scalajs.js
 
 object HomePage {
 
   case class State(id: String, ctl: RouterCtl[Pages])
 
+
   def buttonGroup(state: State) = {
+    def handleClick(action: Group => Unit, redirectPage: Pages): Callback = {
+      action(Group(state.id))
+      state.ctl.set(redirectPage)
+    }
+
     <.div(
       <.button(
         "Create",
-        ^.onClick ==> state.ctl.setEH(ViewGroupAsCreator(state.id))
+        ^.onClick --> handleClick(Group.create, ViewGroupAsCreator(state.id))
       ),
       <.button(
         "Join",
-        ^.onClick ==> state.ctl.setEH(ViewGroupAsGuest(state.id))
+        ^.onClick --> handleClick(Group.join, ViewGroupAsGuest(state.id))
       )
     )
   }
@@ -34,8 +38,9 @@ object HomePage {
       <.div(
         <.div("Groupify"),
         <.input(
-          ^.onChange ==> groupNameChange,
-          ^.value := state.id
+          ^.placeholder := "Group Id",
+          ^.value := state.id,
+          ^.onChange ==> groupNameChange
         ),
         buttonGroup(state)
       )

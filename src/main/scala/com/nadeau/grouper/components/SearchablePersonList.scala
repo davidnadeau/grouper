@@ -2,7 +2,6 @@ package com.nadeau.grouper.components
 
 import japgolly.scalajs.react._, vdom.prefix_<^._
 
-
 object SearchablePersonList {
 
   val component = ReactComponentB[Unit]("Person List")
