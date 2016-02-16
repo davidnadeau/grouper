@@ -20,13 +20,13 @@ object App extends JSApp {
   val routerConfig = RouterConfigDsl[Pages].buildConfig { dsl =>
     import dsl._
 
-    def homeRoute = staticRoute(root, Home) ~> render(HomePage.component())
+    def homeRoute = staticRoute(root, Home) ~> renderR(HomePage.component(_))
     def viewGroupAsCreatorRoute =
-      dynamicRouteCT("group" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsCreator]) ~> dynRender(ViewGroupAsCreatorPage.component(_))
+      dynamicRouteCT("#group/creator" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsCreator]) ~> dynRender(ViewGroupAsCreatorPage.component(_))
     def viewGroupAsGuestRoute =
-      dynamicRouteCT("group" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsGuest]) ~> dynRender(ViewGroupAsGuestPage.component(_))
+      dynamicRouteCT("#group/guest" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsGuest]) ~> dynRender(ViewGroupAsGuestPage.component(_))
     def groupifyRoute =
-      dynamicRouteCT("groupify" / string("[a-zA-Z0-9]+").caseClass[Groupify]) ~> dynRender(GroupifyPage.component(_))
+      dynamicRouteCT("#groupify" / string("[a-zA-Z0-9]+").caseClass[Groupify]) ~> dynRender(GroupifyPage.component(_))
 
     ( homeRoute
     | viewGroupAsCreatorRoute

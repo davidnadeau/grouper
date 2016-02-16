@@ -7,6 +7,6 @@ import japgolly.scalajs.react.vdom.prefix_<^._
 object GroupifyPage {
 
   val component = ReactComponentB[Groupify]("Groupify Page")
-    .render_P(p => <.div("Creator Page " + p.id))
+    .render_P(p => <.div("Groupify Page " + p.id))
     .build
 }

@@ -1,33 +1,30 @@
 package com.nadeau.grouper.pages
 
+import com.nadeau.grouper.App.{ViewGroupAsGuest, ViewGroupAsCreator, Pages}
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 import scala.scalajs.js
 
 object HomePage {
 
-  case class State(id: String)
+  case class State(id: String, ctl: RouterCtl[Pages])
 
   def buttonGroup(state: State) = {
     <.div(
       <.button(
         "Create",
-        ^.onClick := createGroup(state)
+        ^.onClick ==> state.ctl.setEH(ViewGroupAsCreator(state.id))
       ),
       <.button(
         "Join",
-        ^.onClick := joinGroup(state)
+        ^.onClick ==> state.ctl.setEH(ViewGroupAsGuest(state.id))
       )
     )
   }
-  def createGroup(state: State): js.Function = { e: ReactEvent =>
-  }
-  def joinGroup(state: State): js.Function = { e: ReactEvent =>
-    println(state.id)
-  }
 
-  class Backend($: BackendScope[Unit, State]) {
+  class Backend($: BackendScope[RouterCtl[Pages], State]) {
 
     def groupNameChange(e: ReactEventI) = {
       $.modState(_.copy(id = e.target.value))
@@ -44,8 +41,8 @@ object HomePage {
       )
   }
 
-  val component = ReactComponentB[Unit]("Home")
-    .initialState(State(""))
+  val component = ReactComponentB[RouterCtl[Pages]]("Home")
+    .initialState_P(ctl => State("", ctl))
     .renderBackend[Backend]
-    .buildU
+    .build
 }
