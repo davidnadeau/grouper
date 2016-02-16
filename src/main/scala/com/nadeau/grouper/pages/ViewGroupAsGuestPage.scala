@@ -1,12 +1,22 @@
 package com.nadeau.grouper.pages
 
-import com.nadeau.grouper.App.ViewGroupAsGuest
+import com.nadeau.grouper.App._
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
 
 object ViewGroupAsGuestPage {
 
-  val component = ReactComponentB[ViewGroupAsGuest]("ViewGroupAsCreator Page")
-    .render_P(p => <.div("Guest Page " + p.id))
+  case class Props(ctl: RouterCtl[Pages], routeData: ViewGroupAsGuest)
+
+  class Backend($: BackendScope[Props, Unit]) {
+    def render(props: Props) = <.div("Guest View " + props.routeData.id)
+  }
+
+  def apply(viewGroupAsGuest: ViewGroupAsGuest, ctl: RouterCtl[Pages]): ReactElement =
+    component(Props(ctl, viewGroupAsGuest))
+
+  private val component = ReactComponentB[Props]("ViewGroupAsGuest")
+    .renderBackend[Backend]
     .build
 }

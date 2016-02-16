@@ -9,7 +9,6 @@ object HomePage {
 
   case class State(id: String, ctl: RouterCtl[Pages])
 
-
   def buttonGroup(state: State) = {
     def handleClick(action: Group => Unit, redirectPage: Pages): Callback = {
       action(Group(state.id))
@@ -46,7 +45,10 @@ object HomePage {
       )
   }
 
-  val component = ReactComponentB[RouterCtl[Pages]]("Home")
+  def apply(ctl: RouterCtl[Pages]): ReactElement =
+    component(ctl)
+
+  private val component = ReactComponentB[RouterCtl[Pages]]("Home")
     .initialState_P(ctl => State("", ctl))
     .renderBackend[Backend]
     .build

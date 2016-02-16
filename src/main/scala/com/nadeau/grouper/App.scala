@@ -1,5 +1,6 @@
 package com.nadeau.grouper
 
+import com.nadeau.grouper.App.Pages
 import com.nadeau.grouper.pages._
 import japgolly.scalajs.react.ReactDOM
 import japgolly.scalajs.react.extra.router._
@@ -19,11 +20,11 @@ object App extends JSApp {
   val routerConfig = RouterConfigDsl[Pages].buildConfig { dsl =>
     import dsl._
 
-    def homeRoute = staticRoute(root, Home) ~> renderR(HomePage.component(_))
+    def homeRoute = staticRoute(root, Home) ~> renderR(HomePage(_))
     def viewGroupAsCreatorRoute =
-      dynamicRouteCT("#group/creator" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsCreator]) ~> dynRender(ViewGroupAsCreatorPage.component(_))
+      dynamicRouteCT("#group/creator" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsCreator]) ~> dynRenderR((page, ctl) => ViewGroupAsCreatorPage(page, ctl))
     def viewGroupAsGuestRoute =
-      dynamicRouteCT("#group/guest" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsGuest]) ~> dynRender(ViewGroupAsGuestPage.component(_))
+      dynamicRouteCT("#group/guest" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsGuest]) ~> dynRenderR((page, ctl) => ViewGroupAsGuestPage(page, ctl))
     def groupifyRoute =
       dynamicRouteCT("#groupify" / string("[a-zA-Z0-9]+").caseClass[Groupify]) ~> dynRender(GroupifyPage.component(_))
 
