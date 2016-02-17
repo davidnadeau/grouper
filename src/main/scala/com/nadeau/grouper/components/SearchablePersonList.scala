@@ -1,32 +1,38 @@
 package com.nadeau.grouper.components
 
+import com.nadeau.grouper.models.Person
 import japgolly.scalajs.react._, vdom.prefix_<^._
 
 object SearchablePersonList {
 
-  val component = ReactComponentB[Unit]("Person List")
-    .render(_ =>
-      <.div(
-        searchBox,
-        list
-      )
-    ).buildU
+  case class Props(list: List[Person])
+  case class State(name: String)
 
-  def searchBox = {
-    <.div(
+  class Backend($: BackendScope[Props, State]) {
+    def nameSearchChange(e: ReactEventI) = {
+      $.modState(_.copy(name = e.target.value))
+    }
+
+    def render(props: Props, state: State) = <.div(
       <.input(
-        ^.`type` := "text",
-        ^.`class` := "searchPeople",
-        ^.placeholder := "Person name"
+        ^.placeholder := "Person name",
+        ^.value := state.name,
+        ^.onChange ==> nameSearchChange
+      ),
+      <.ul(
+        for {
+          item <- props.list.filter(_.name.toLowerCase.contains(state.name.toLowerCase))
+        } yield <.li(item.name)
       )
     )
   }
 
-  def list = {
-    <.ul(
-      ^.`class` := "person-list",
-      for { person <- List(1, 2, 3, 4, 5, 6) } yield <.li(person)
-    )
-  }
+  def apply(list: List[Person]): ReactElement =
+    component(Props(list))
+
+  private val component = ReactComponentB[Props]("Person List")
+      .initialState(State(""))
+    .renderBackend[Backend]
+    .build
 
 }

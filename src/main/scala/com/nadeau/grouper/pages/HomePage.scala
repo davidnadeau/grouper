@@ -29,9 +29,7 @@ object HomePage {
 
   class Backend($: BackendScope[RouterCtl[Pages], State]) {
 
-    def groupNameChange(e: ReactEventI) = {
-      $.modState(_.copy(id = e.target.value))
-    }
+    def groupNameChange(e: ReactEventI) = $.modState(_.copy(id = e.target.value))
 
     def render(state: State) =
       <.div(

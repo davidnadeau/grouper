@@ -26,7 +26,7 @@ object App extends JSApp {
     def viewGroupAsGuestRoute =
       dynamicRouteCT("#group/guest" / string("[a-zA-Z0-9]+").caseClass[ViewGroupAsGuest]) ~> dynRenderR((page, ctl) => ViewGroupAsGuestPage(page, ctl))
     def groupifyRoute =
-      dynamicRouteCT("#groupify" / string("[a-zA-Z0-9]+").caseClass[Groupify]) ~> dynRender(GroupifyPage.component(_))
+      dynamicRouteCT("#groupify" / string("[a-zA-Z0-9]+").caseClass[Groupify]) ~> dynRender(GroupifyPage(_))
 
     ( homeRoute
     | viewGroupAsCreatorRoute
