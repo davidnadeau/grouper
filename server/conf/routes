@@ -1,0 +1,6 @@
+POST    /group/:id	controllers.App.create(id)
+PUT     /group/:id	controllers.App.join(id)
+GET     /group/:id	controllers.App.whoInit(id)
+
+POST	/groupify/:id	controllers.App.groupify(id)
+PUT	/groupify/:id	controllers.App.getMyGroup(id)
