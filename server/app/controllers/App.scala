@@ -1,7 +1,8 @@
 package controllers
 
 import models.{Group, Person}
-import play.api.libs.json.{JsError, Json}
+import play.api.data.validation.ValidationError
+import play.api.libs.json.{JsPath, JsError, Json}
 import play.api.mvc._
 
 object App extends Controller {
@@ -9,9 +10,7 @@ object App extends Controller {
   def create(id: String) = Action(BodyParsers.parse.json) { request =>
     val result = request.body.validate[Person]
     result.fold(
-      errors => {
-        BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
-      },
+      errors => handleErrors(errors),
       person => {
         val res = Group.create(id, person)
         Ok(Json.obj("status" -> "OK", "message" -> res))
@@ -22,9 +21,7 @@ object App extends Controller {
   def join(id: String) = Action(BodyParsers.parse.json) { request =>
     val result = request.body.validate[Person]
     result.fold(
-      errors => {
-        BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
-      },
+      errors => handleErrors(errors),
       person => {
         val res = Group.join(id, person)
         Ok(Json.obj("status" -> "OK", "message" -> res))
@@ -41,9 +38,7 @@ object App extends Controller {
   def groupify(id: String) = Action(BodyParsers.parse.json) { request =>
     val result = request.body.validate[Int]
     result.fold(
-      errors => {
-        BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
-      },
+      errors => handleErrors(errors),
       groupSize => {
         val res = Group.groupify(id, groupSize)
         Ok(Json.obj("status" -> "OK", "message" -> res))
@@ -51,16 +46,18 @@ object App extends Controller {
     )
   }
 
+
   def getMyGroup(id: String) = Action(BodyParsers.parse.json) { request =>
     val result = request.body.validate[String]
     result.fold(
-      errors => {
-        BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
-      },
+      errors => handleErrors(errors),
       personId => {
         val res = Group.getMySubGroup(id, personId)
         Ok(Json.obj("status" -> "OK", "message" -> Json.toJson(res)))
       }
     )
   }
+
+  private def handleErrors(errors: Seq[(JsPath, Seq[ValidationError])]) =
+    BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
 }
