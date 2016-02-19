@@ -1,3 +1,6 @@
+GET     /           controllers.App.home
+GET /assets/*file controllers.Assets.at(path="/public", file)
+
 POST    /group/:id	controllers.App.create(id)
 PUT     /group/:id	controllers.App.join(id)
 GET     /group/:id	controllers.App.whoInit(id)

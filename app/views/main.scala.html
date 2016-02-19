@@ -1,0 +1,15 @@
+@(title: String)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        <script type="text/javascript" src="@routes.Assets.at("client/target/scala-2.11/grouper-jsdeps.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("client/target/scala-2.11/grouper-fastopt.js")"></script>
+    </head>
+    <body>
+        <section class="grouper"></section>
+        <script type="text/javascript" src="@routes.Assets.at("client/loader.js")"></script>
+    </body>
+</html>

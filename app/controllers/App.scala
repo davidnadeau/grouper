@@ -1,17 +1,23 @@
 package controllers
 
 import models.{Group, Person}
+import play.api.Logger
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{JsPath, JsError, Json}
 import play.api.mvc._
 
 object App extends Controller {
 
+  def home = Action {
+    Ok(views.html.main("BOMBSHELL"))
+  }
+
   def create(id: String) = Action(BodyParsers.parse.json) { request =>
     val result = request.body.validate[Person]
     result.fold(
       errors => handleErrors(errors),
       person => {
+        Logger.info("CREATED")
         val res = Group.create(id, person)
         Ok(Json.obj("status" -> "OK", "message" -> res))
       }
@@ -58,6 +64,9 @@ object App extends Controller {
     )
   }
 
-  private def handleErrors(errors: Seq[(JsPath, Seq[ValidationError])]) =
+  private def handleErrors(errors: Seq[(JsPath, Seq[ValidationError])]) ={
+    Logger.info("CREATED")
+    println("FAILEDDDDD")
     BadRequest(Json.obj("status" -> "fail", "message" -> JsError.toJson(errors)))
+  }
 }
