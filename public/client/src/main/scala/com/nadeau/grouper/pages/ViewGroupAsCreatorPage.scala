@@ -1,8 +1,8 @@
 package com.nadeau.grouper.pages
 
 import com.nadeau.grouper.App._
-import com.nadeau.grouper.components.SearchablePersonList
-import com.nadeau.grouper.models.{Group, Person}
+import com.nadeau.grouper.components.{TaskList, SearchablePersonList}
+import com.nadeau.grouper.models.Person
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.prefix_<^._
@@ -13,10 +13,6 @@ object ViewGroupAsCreatorPage {
   case class State(groupSize: Int)
 
   class Backend($: BackendScope[Props, State]) {
-    def handleGroupifyClick(state: State, props: Props, redirectPage: Pages): Callback = {
-      // groupify(state.groupSize)
-      props.ctl.set(redirectPage)
-    }
 
     def groupSizeChange(e: ReactEventI) = $.modState(_.copy(groupSize = e.target.value.toInt))
 
@@ -29,13 +25,21 @@ object ViewGroupAsCreatorPage {
           ^.value := state.groupSize,
           ^.onChange ==> groupSizeChange
         ),
-        <.button(
-          "Groupify",
-          ^.onClick --> handleGroupifyClick(state, props, Groupify(props.routeData.id))
-
-        )
+        groupifyButton(props, state)
       ),
-      SearchablePersonList(Person.spoofList)
+      TaskList()
+    )
+  }
+
+  def groupifyButton(props: Props, state: State) = {
+    def handleGroupifyClick(state: State, props: Props, redirectPage: Pages): Callback = {
+      // groupify(state.groupSize)
+      props.ctl.set(redirectPage)
+    }
+
+    <.button(
+      "Groupify",
+      ^.onClick --> handleGroupifyClick(state, props, Groupify(props.routeData.id))
     )
   }
 
